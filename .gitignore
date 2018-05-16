@@ -1,0 +1,14 @@
+.DS_Store
+*.npy
+*.pyc
+*.png
+*.hdf5
+*.jpg
+*.jpeg
+*.mat
+*.cs-gpu*
+image*.txt
+*.tar.gz
+*.zip
+data/ccnn/
+__pycache__/

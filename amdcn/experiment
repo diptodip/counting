@@ -1,0 +1,135 @@
+#!/bin/bash
+EXPERIMENTS="ucsd_upscale ucsd_maximal ucsd_minimal ucsd_downscale ucsd_original trancos ucf_0 ucf_1 ucf_2 ucf_3 ucf_4 worldexpo"
+
+function usage { printf "usage: $0 train/test/process dataset \n"
+    printf "  train/test/scale: whether to train or test\n"
+    printf "  dataset: ucsd_upscale / ucsd_maximal / trancos / ucf_0 / ucf_1 / ucf_2 / ucf_3 / ucf_4 worldexpo\n"
+    exit
+}
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+    usage
+elif [ "$1" = "train" ] && [[ $EXPERIMENTS == *"$2"* ]]; then
+    if [ "$2" == "ucsd_upscale" ]; then
+        python3 train_model.py --train_path UCSD/train_upscale.hdf5 --val_path UCSD/train_upscale.hdf5 --output_path UCSD/upscale_model.hdf5 --log_path logs/UCSD/upscale --batch_size 1 --batches_per_epoch 3200 --num_epochs 1000 --learning_rate 0.0001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_maximal" ]; then
+        python3 train_model.py --train_path UCSD/train_maximal.hdf5 --val_path UCSD/train_maximal.hdf5 --output_path UCSD/maximal_model.hdf5 --log_path logs/UCSD/maximal --batch_size 1 --batches_per_epoch 3200 --num_epochs 100 --learning_rate 0.0001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_minimal" ]; then
+        python3 train_model.py --train_path UCSD/train_minimal.hdf5 --val_path UCSD/train_minimal.hdf5 --output_path UCSD/minimal_model.hdf5 --log_path logs/UCSD/minimal --batch_size 1 --batches_per_epoch 3200 --num_epochs 100 --learning_rate 0.0001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_downscale" ]; then
+        python3 train_model.py --train_path UCSD/train_downscale.hdf5 --val_path UCSD/train_downscale.hdf5 --output_path UCSD/downscale_model.hdf5 --log_path logs/UCSD/downscale --batch_size 1 --batches_per_epoch 3200 --num_epochs 100 --learning_rate 0.0001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_original" ]; then
+        python3 train_model.py --train_path UCSD/train_original.hdf5 --val_path UCSD/train_original.hdf5 --output_path UCSD/original_model.hdf5 --log_path logs/UCSD/original --batch_size 1 --batches_per_epoch 3200 --num_epochs 100 --learning_rate 0.0001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "trancos" ]; then
+        python3 train_model.py --train_path TRANCOS/train.hdf5 --val_path TRANCOS/val.hdf5 --output_path TRANCOS/model.hdf5 --log_path logs/TRANCOS --batch_size 1 --batches_per_epoch 1600 --num_epochs 100 --learning_rate 0.001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_0" ]; then
+        python3 train_model.py --train_path UCF/train_0.hdf5 --val_path UCF/test_0.hdf5 --output_path UCF/model_0.hdf5 --log_path logs/UCF --batch_size 1 --batches_per_epoch 10000 --num_epochs 100 --learning_rate 0.001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_1" ]; then
+        python3 train_model.py --train_path UCF/train_1.hdf5 --val_path UCF/test_1.hdf5 --output_path UCF/model_1.hdf5 --log_path logs/UCF --batch_size 1 --batches_per_epoch 10000 --num_epochs 100 --learning_rate 0.001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_2" ]; then
+        python3 train_model.py --train_path UCF/train_2.hdf5 --val_path UCF/test_2.hdf5 --output_path UCF/model_2.hdf5 --log_path logs/UCF --batch_size 1 --batches_per_epoch 10000 --num_epochs 100 --learning_rate 0.001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_3" ]; then
+        python3 train_model.py --train_path UCF/train_3.hdf5 --val_path UCF/test_3.hdf5 --output_path UCF/model_3.hdf5 --log_path logs/UCF --batch_size 1 --batches_per_epoch 10000 --num_epochs 100 --learning_rate 0.001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_4" ]; then
+        python3 train_model.py --train_path UCF/train_4.hdf5 --val_path UCF/test_4.hdf5 --output_path UCF/model_4.hdf5 --log_path logs/UCF --batch_size 1 --batches_per_epoch 10000 --num_epochs 100 --learning_rate 0.001 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "worldexpo" ]; then
+        python3 train_model.py --train_path WorldExpo/train.hdf5 --val_path WorldExpo/val.hdf5 --output_path WorldExpo/model.hdf5 --log_path logs/WorldExpo --batch_size 1 --batches_per_epoch 16000 --num_epochs 25 --learning_rate 0.001 --model_type parallel_aggregate_test --gpu_frac 0.45
+    fi
+    exit
+elif [ "$1" = "test" ] && [[ $EXPERIMENTS == *"$2"* ]]; then
+    if [ "$2" == "ucsd_upscale" ]; then
+        python3 test_model.py --model_path UCSD/upscale_model.hdf5 --data_path UCSD/test_upscale.hdf5 --output_path output/UCSD/upscale --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_maximal" ]; then
+        python3 test_model.py --model_path UCSD/maximal_model.hdf5 --data_path UCSD/test_maximal.hdf5 --output_path output/UCSD/maximal --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_minimal" ]; then
+        python3 test_model.py --model_path UCSD/minimal_model.hdf5 --data_path UCSD/test_minimal.hdf5 --output_path output/UCSD/minimal --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_downscale" ]; then
+        python3 test_model.py --model_path UCSD/downscale_model.hdf5 --data_path UCSD/test_downscale.hdf5 --output_path output/UCSD/downscale --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucsd_original" ]; then
+        python3 test_model.py --model_path UCSD/original_model.hdf5 --data_path UCSD/test_original.hdf5 --output_path output/UCSD/original --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "trancos" ]; then
+        python3 test_model.py --model_path TRANCOS/model.hdf5 --data_path TRANCOS/image_test.hdf5 --output_path output/TRANCOS --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_0" ]; then
+        python3 test_model.py --model_path UCF/model_0.hdf5 --data_path UCF/image_test.hdf5 --output_path output/UCF/0 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_1" ]; then
+        python3 test_model.py --model_path UCF/model_1.hdf5 --data_path UCF/image_test.hdf5 --output_path output/UCF/1 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_2" ]; then
+        python3 test_model.py --model_path UCF/model_2.hdf5 --data_path UCF/image_test.hdf5 --output_path output/UCF/2 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_3" ]; then
+        python3 test_model.py --model_path UCF/model_3.hdf5 --data_path UCF/image_test.hdf5 --output_path output/UCF/3 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "ucf_4" ]; then
+        python3 test_model.py --model_path UCF/model_4.hdf5 --data_path UCF/image_test.hdf5 --output_path output/UCF/4 --model_type parallel_aggregate --gpu_frac 0.45
+    elif [ "$2" == "worldexpo" ]; then
+        python3 test_model.py --model_path WorldExpo/model.hdf5 --data_path WorldExpo/test.hdf5 --output_path output/WorldExpo/ --model_type parallel_aggregate --gpu_frac 0.45
+    fi
+    exit
+elif [ "$1" = "process" ] && [[ $EXPERIMENTS == *"$2"* ]]; then
+    if [ "$2" == "ucsd_upscale" ]; then
+        python3 preprocess.py --input_path UCSD/train.hdf5 --output_path UCSD/train_.hdf5 --remove_mean --model_type parallel
+        mv UCSD/train_.hdf5 UCSD/train_upscale.hdf5
+        python3 preprocess.py --input_path UCSD/test.hdf5 --output_path UCSD/test_.hdf5 --remove_mean --model_type parallel
+        mv UCSD/test_.hdf5 UCSD/test_upscale.hdf5
+    elif [ "$2" == "ucsd_maximal" ]; then
+        python3 preprocess.py --input_path UCSD/train.hdf5 --output_path UCSD/train_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv UCSD/train_.hdf5 UCSD/train_maximal.hdf5
+        python3 preprocess.py --input_path UCSD/test.hdf5 --output_path UCSD/test_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv UCSD/test_.hdf5 UCSD/test_maximal.hdf5
+    elif [ "$2" == "ucsd_minimal" ]; then
+        python3 preprocess.py --input_path UCSD/train.hdf5 --output_path UCSD/train_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv UCSD/train_.hdf5 UCSD/train_minimal.hdf5
+        python3 preprocess.py --input_path UCSD/test.hdf5 --output_path UCSD/test_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv UCSD/test_.hdf5 UCSD/test_minimal.hdf5
+    elif [ "$2" == "ucsd_downscale" ]; then
+        python3 preprocess.py --input_path UCSD/train.hdf5 --output_path UCSD/train_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv UCSD/train_.hdf5 UCSD/train_downscale.hdf5
+        python3 preprocess.py --input_path UCSD/test.hdf5 --output_path UCSD/test_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv UCSD/test_.hdf5 UCSD/test_downscale.hdf5
+    elif [ "$2" == "ucsd_original" ]; then
+        python3 preprocess.py --input_path UCSD/train.hdf5 --output_path UCSD/train_.hdf5 --remove_mean --model_type parallel
+        mv UCSD/train_.hdf5 UCSD/train_original.hdf5
+        python3 preprocess.py --input_path UCSD/test.hdf5 --output_path UCSD/test_.hdf5 --remove_mean --model_type parallel
+        mv UCSD/test_.hdf5 UCSD/test_original.hdf5
+    elif [ "$2" == "trancos" ]; then
+        python3 preprocess.py --input_path TRANCOS/train.hdf5 --output_path TRANCOS/train_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv TRANCOS/train_.hdf5 TRANCOS/train.hdf5
+        python3 preprocess.py --input_path TRANCOS/test.hdf5 --output_path TRANCOS/test_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv TRANCOS/test_.hdf5 TRANCOS/test.hdf5
+        python3 preprocess.py --input_path TRANCOS/val.hdf5 --output_path TRANCOS/val_.hdf5 --remove_mean --model_type parallel_aggregate
+        mv TRANCOS/val_.hdf5 TRANCOS/val.hdf5
+    elif [ "$2" == "ucf_0" ]; then
+        python3 preprocess.py --input_path UCF/train.hdf5 --output_path UCF/train_.hdf5 --remove_mean --do_not_pad --model_type parallel
+        mv UCF/train_.hdf5 UCF/train_0.hdf5
+        python3 preprocess.py --input_path UCF/test.hdf5 --output_path UCF/test_.hdf5 --remove_mean --do_not_pad --model_type parallel
+        mv UCF/test_.hdf5 UCF/test_0.hdf5
+    elif [ "$2" == "ucf_1" ]; then
+        python3 preprocess.py --input_path UCF/train.hdf5 --output_path UCF/train_.hdf5 --remove_mean --model_type parallel
+        mv UCF/train_.hdf5 UCF/train_1.hdf5
+        python3 preprocess.py --input_path UCF/test.hdf5 --output_path UCF/test_.hdf5 --remove_mean --model_type parallel
+        mv UCF/test_.hdf5 UCF/test_1.hdf5
+    elif [ "$2" == "ucf_2" ]; then
+        python3 preprocess.py --input_path UCF/train.hdf5 --output_path UCF/train_.hdf5 --remove_mean --model_type parallel
+        mv UCF/train_.hdf5 UCF/train_2.hdf5
+        python3 preprocess.py --input_path UCF/test.hdf5 --output_path UCF/test_.hdf5 --remove_mean --model_type parallel
+        mv UCF/test_.hdf5 UCF/test_2.hdf5
+    elif [ "$2" == "ucf_3" ]; then
+        python3 preprocess.py --input_path UCF/train.hdf5 --output_path UCF/train_.hdf5 --remove_mean --model_type parallel
+        mv UCF/train_.hdf5 UCF/train_3.hdf5
+        python3 preprocess.py --input_path UCF/test.hdf5 --output_path UCF/test_.hdf5 --remove_mean --model_type parallel
+        mv UCF/test_.hdf5 UCF/test_3.hdf5
+    elif [ "$2" == "ucf_4" ]; then
+        python3 preprocess.py --input_path UCF/train.hdf5 --output_path UCF/train_.hdf5 --remove_mean --model_type parallel
+        mv UCF/train_.hdf5 UCF/train_4.hdf5
+        python3 preprocess.py --input_path UCF/test.hdf5 --output_path UCF/test_.hdf5 --remove_mean --model_type parallel
+        mv UCF/test_.hdf5 UCF/test_4.hdf5
+    elif [ "$2" == "worldexpo" ]; then
+        python3 preprocess.py --input_path WorldExpo/train.hdf5 --output_path WorldExpo/train_.hdf5 --remove_mean --do_not_pad --model_type parallel
+        mv WorldExpo/train_.hdf5 WorldExpo/train.hdf5
+        python3 preprocess.py --input_path WorldExpo/val.hdf5 --output_path WorldExpo/val_.hdf5 --remove_mean --do_not_pad --model_type parallel
+        mv WorldExpo/val_.hdf5 WorldExpo/val.hdf5
+        python3 preprocess.py --input_path WorldExpo/test.hdf5 --output_path WorldExpo/test_.hdf5 --remove_mean --do_not_pad --model_type parallel
+        mv WorldExpo/test_.hdf5 WorldExpo/test.hdf5
+    fi
+    exit
+else
+    usage
+fi
