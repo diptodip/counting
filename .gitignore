@@ -12,3 +12,4 @@ image*.txt
 *.zip
 data/ccnn/
 __pycache__/
+!img/*.png
