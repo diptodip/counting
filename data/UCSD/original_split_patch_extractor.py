@@ -15,13 +15,10 @@ test_image_f = h5py.File('test_image.hdf5', 'w')
 test_image_data = test_image_f.create_dataset('data', (1200, 158, 238, 1), dtype='uint8')
 test_image_label = test_image_f.create_dataset('label', (1200, 158, 238), dtype='float32')
 
-range = xrange
-imlist = [io.imread(f, as_grey=True) for f in sorted(glob('./A_shanghai/*.png'))]
-#labellist = [io.imread(f, as_grey=True) for f in sorted(glob('./B_shanghai/*.png'))]
-labellist = [np.load(f) for f in sorted(glob('./B_shanghai/*.npy'))]
-testimlist = [io.imread(f, as_grey=True) for f in sorted(glob('./A_shanghai_testing/*.png'))]
-#testlabellist = [io.imread(f, as_grey=True) for f in sorted(glob('./B_shanghai_testing/*.png'))]
-testlabellist = [np.load(f) for f in sorted(glob('./B_shanghai_testing/*.npy'))]
+imlist = [io.imread(f, as_grey=True) for f in sorted(glob('./A_original/*.png'))]
+labellist = [np.load(f) for f in sorted(glob('./B_original/*.npy'))]
+testimlist = [io.imread(f, as_grey=True) for f in sorted(glob('./A_original_testing/*.png'))]
+testlabellist = [np.load(f) for f in sorted(glob('./B_original_testing/*.npy'))]
 
 mask = np.loadtxt('ucsd_mask.txt')
 

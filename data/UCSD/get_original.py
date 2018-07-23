@@ -17,13 +17,13 @@ print('[i] getting training images')
 for i in tqdm(range(len(train_images))):
     image = train_images[i]
     label = train_labels[i]
-    os.system('cp {} A_shanghai/'.format(image))
-    os.system('cp {} B_shanghai/'.format(label))
+    os.system('cp {} A_original/'.format(image))
+    os.system('cp {} B_original/'.format(label))
 
 print('[i] getting testing images')
 
 for i in tqdm(range(len(test_images))):
     image = test_images[i]
     label = test_labels[i]
-    os.system('cp {} A_shanghai_testing/'.format(image))
-    os.system('cp {} B_shanghai_testing/'.format(label))
+    os.system('cp {} A_original_testing/'.format(image))
+    os.system('cp {} B_original_testing/'.format(label))
