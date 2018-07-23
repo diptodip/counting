@@ -45,9 +45,9 @@ The training scripts for this implementation are set up to expect HDF5 files as 
 
 #### UCSD
 
-Make sure to set up the following directories as shown. The label images should be named as ``vidf1_33_00nfxyzdots.png`` where ``vidf1_33_00nfxyz`` is the original image name. Once the label images are in ``data/UCSD/B/``, run the included ``blur.py`` in ``data/UCSD/B/`` which will generate the ground truth density maps. You can also use ``perspective_blur.py`` if you would like to generate density maps with perspective scaling. These scripts assume that they will be called from within ``data/UCSD/B/``. After generating the density maps, call ``get_data.py`` which will gather the four splits of UCSD used by a majority of other papers. Then, call ``get_shanghai.py`` which will gather the original split of the UCSD data.
+Make sure to set up the following directories as shown. The label images should be named as ``vidf1_33_00nfxyzdots.png`` where ``vidf1_33_00nfxyz`` is the original image name. Once the label images are in ``data/UCSD/B/``, run the included ``blur.py`` in ``data/UCSD/B/`` which will generate the ground truth density maps. You can also use ``perspective_blur.py`` if you would like to generate density maps with perspective scaling. These scripts assume that they will be called from within ``data/UCSD/B/``. After generating the density maps, call ``get_data.py`` which will gather the four splits of UCSD used by a majority of other papers. Then, call ``get_original.py`` which will gather the original split of the UCSD data.
 
-Use ``patch_extractor.py`` to generate the train and test HDF5 files for the first four splits of UCSD. In order to generate the train and test files for each different split, edit lines ``23-26`` as appropriate to load the data from the right folders. For the original split, simply run ``shanghai_patch_extractor.py``.
+Use ``patch_extractor.py`` to generate the train and test HDF5 files for the first four splits of UCSD. In order to generate the train and test files for each different split, edit lines ``23-26`` as appropriate to load the data from the right folders. For the original split, simply run ``original_split_patch_extractor.py``.
 
 ```
 data/
@@ -66,8 +66,8 @@ data/
         A_downscale/testing/
         A_upscale/
         A_upscale_testing/
-        A_shanghai/
-        A_shanghai_testing/
+        A_original/
+        A_original_testing/
         B_minimal/
         B_minimal_testing/
         B_maximal/
@@ -76,12 +76,12 @@ data/
         B_downscale/testing/
         B_upscale/
         B_upscale_testing/
-        B_shanghai/
-        B_shanghai_testing/
+        B_original/
+        B_original_testing/
         get_data.py
-        get_shanghai.py
+        get_original.py
         patch_extractor.py
-        shanghai_patch_extractor.py
+        original_split_patch_extractor.py
 ```
 
 #### UCF50
@@ -193,7 +193,7 @@ For examples of calling both the training and testing scripts, please see the ``
 ```
 usage: ./experiment train/test/process dataset
   train/test/process: whether to train, test, or apply preprocessing to data
-  dataset: ucsd_upscale / ucsd_maximal / ucsd_minimal / ucsd_downscale / ucsd_shanghai / trancos / ucf_0 / ucf_1 / ucf_2 / ucf_3 / ucf_4 / worldexpo
+  dataset: ucsd_upscale / ucsd_maximal / ucsd_minimal / ucsd_downscale / ucsd_original / trancos / ucf_0 / ucf_1 / ucf_2 / ucf_3 / ucf_4 / worldexpo
 ```
 
 In order to replicate the experiments, you should first move the appropriate ``train/test/val.hdf5`` files from the respective ``data`` folder to the equivalent folder in ``amdcn``. Then, run the ``process`` command in the ``experiment`` script for the desired dataset. After this, you should not have to run the process script anymore, and can run ``train`` and ``test`` as desired. Make sure that there is an ``output`` folder in the ``amdcn`` folder as shown below:
@@ -206,7 +206,7 @@ amdcn/
                downscale/
                maximal/
                minimal/
-               shanghai/
+               original/
            UCF/
               0/
               1/
@@ -219,7 +219,7 @@ amdcn/
 
 ### Obtaining counts from density maps
 
-Scripts to integrate density maps and output counts can be run after testing is complete. The scripts included in the ``scripts`` directory are ``sliding_window_integrator.py``, ``full_image_integrator.py``, and ``ucsd_quadrant_integrator.py``.
+Scripts to integrate density maps and output counts can be run after testing is complete. The scripts included in the ``scripts`` directory are ``sliding_window_integrator.py``, ``full_image_integrator.py``, and ``quadrant_integrator.py``.
 
 The ``sliding_window_integrator.py`` script has the following arguments:
 
@@ -281,6 +281,8 @@ height = 1024
 width = 1024
 num_images = 50
 ```
+
+Unlike the other datasets, this will output for all images (both training and testing sets). To determine test performance, you must pick out the desired test images.
 
 Note that output for all splits of UCF must have been run prior to running this script.
 

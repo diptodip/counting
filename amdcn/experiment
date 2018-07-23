@@ -2,8 +2,8 @@
 EXPERIMENTS="ucsd_upscale ucsd_maximal ucsd_minimal ucsd_downscale ucsd_original trancos ucf_0 ucf_1 ucf_2 ucf_3 ucf_4 worldexpo"
 
 function usage { printf "usage: $0 train/test/process dataset \n"
-    printf "  train/test/scale: whether to train or test\n"
-    printf "  dataset: ucsd_upscale / ucsd_maximal / trancos / ucf_0 / ucf_1 / ucf_2 / ucf_3 / ucf_4 worldexpo\n"
+    printf "  train/test/process: whether to train or test\n"
+    printf "  dataset: ucsd_upscale / ucsd_maximal / ucsd_minimal / ucsd_downscale / ucsd_original / trancos / ucf_0 / ucf_1 / ucf_2 / ucf_3 / ucf_4 worldexpo\n"
     exit
 }
 
