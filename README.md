@@ -16,7 +16,7 @@ The following images are example outputs from the network on the UCSD, UCF50, an
 
 ![UCF50 output](img/ucf_sample.png)
 
-![TRANCOS output](img/trancos_sample.png)
+
 
 These results are from our paper published at the [Visual Understanding of Humans in Crowd Scene Workshop](https://vuhcs.github.io/) at CVPR 2018.
 
