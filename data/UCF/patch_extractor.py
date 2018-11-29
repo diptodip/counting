@@ -7,7 +7,7 @@ from tqdm import tqdm
 from skimage import io
 
 # maybe make these arguments later
-pad = 65
+pad = 0
 patch_size = 256
 height = 1024
 width = 1024
